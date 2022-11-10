@@ -1,0 +1,101 @@
+body {
+    background-image: url(/images/snakes.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    
+}
+
+.backTwo {
+    width: 600px;
+    height: 925px;
+    background-color: rgba(120, 119, 119, 0.226);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    color: rgba(172, 125, 238, 0.902);    
+    font-family: fantasy;
+    font-size: 70px;
+    text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000;
+    
+}
+
+#start {
+    background-color: rgba(172, 125, 238, 0.902);
+    font-size: 20px;
+    border-radius: 50%;
+    padding: 14px;
+    margin: 14px;
+}
+
+.board {
+    background-color: rgba(172, 125, 238, 0.902);
+    height: 400px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    
+
+}
+
+tr {
+    height: 400px;
+    width: 400px;
+    display: flex;
+    
+}
+
+td {
+    display: flex;
+    background-color: rgba(172, 125, 238, 0.902);
+    height: 18px;
+    width: 18px;
+    outline: 1px solid black;
+    justify-content: center;
+}
+
+.score {
+    color: rgba(172, 125, 238, 0.902); 
+    font-family: fantasy;
+    font-size: 40px;
+    text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000;
+    margin: 14px;
+}
+
+.instruct {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-size: 18px;
+    font-family: fantasy;
+    height: 150px;
+    width: 400px;
+    background-color: rgba(116, 53, 205, 0.251);
+    border: 1px solid black;
+    color: rgba(172, 125, 238, 0.902);
+    text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000;
+}
+
+h2 {
+    margin-bottom: 0%;
+}
+
+.food {
+    background-color: rgba(209, 33, 18, 0.996);
+    display: flex;
+    /* background-image: url(/images/ham.png); */
+    height: 18px;
+    width: 18px;
+}
+
+.snake {
+    background-color: rgba(8, 42, 8, 0.639);
+    height: 18px;
+    width: 18px;
+}
