@@ -1,21 +1,30 @@
 //DOM Elements
 const board = document.querySelector('.board');
+const table = createBoard(); //Storing game board here <--
 const start = document.querySelector('#start');
-let score = document.querySelector('.score');
+const scoreResult = document.querySelector('.scoreResult');
+let score = 0;
+let food = {
+    position: [], //<-- why can't I find position on the grid??
+    eaten: false
+}
 let snake = [[9, 10]];
 let nextDirection = [0, 1];
 let gameState =  {
     playing: false,
-    }
+    gameLost: false
+}
+
 
 //Event listeners
 start.addEventListener('click', startGame);
 document.addEventListener('keydown', function(ev){
-    console.log(ev)
+    ev.preventDefault();
     if (ev.key === ' ') {
         startGame();  
     }
 });
+
 window.addEventListener('keydown', function(ev) {
     //up  
     if (ev.key === 'ArrowUp') {
@@ -35,7 +44,7 @@ window.addEventListener('keydown', function(ev) {
     }
 })
 
-//Create board
+//Create board (called on line 3)
 function createBoard () {
     for(let x = 0; x < 20; x++){
         let row = document.createElement('tr');
@@ -49,8 +58,6 @@ function createBoard () {
     }
 }
 
-createBoard();
-
 //Generate Food
 function genFood (){
     let foodX = Math.floor(Math.random() * 20); 
@@ -58,6 +65,7 @@ function genFood (){
     let row = board.children[foodX];
     let cell = row.children[foodY];
     cell.classList.add('food');
+    food.position = cell;
 }
 genFood();
 
@@ -70,16 +78,14 @@ function startGame (){
         start.innerText = 'Resume'
     }
     console.log('game has started');
-    
 }
-
-
 
 //Tick
 setInterval(function () {
     if(gameState.playing) {
         console.log('tick');
         moveSnake();
+        eatFood();
         return;
     } 
 }, 300);
@@ -100,10 +106,10 @@ makeSnake()
 function removeSnake () {
     for (let i = 0; i < snake.length; i++){
         let snakePos = snake[i];
-        let y = snakePos[0];
-        let x = snakePos[1];
-        let pos = y + '-' + x;
-        //Can remove 
+        let x = snakePos[0];
+        let y = snakePos[1];
+        let pos = x + '-' + y;
+        //Remove zero index and class of snake
         snake.shift(snake[0]);
         document.getElementById(pos).classList.remove('snake')
     }
@@ -111,45 +117,29 @@ function removeSnake () {
 
 
 //Move Snake
-function moveSnake () {
+function moveSnake() {
     let head = snake[snake.length - 1];
     let nextHead = [head[0] + nextDirection[0], head[1] + nextDirection[1]];
     snake.push(nextHead);
-    removeSnake ()
-    makeSnake ()
-
+    removeSnake();
+    makeSnake();
 }
 
+//Check for Food, eat if available
+function eatFood() {
+    let snk = document.getElementsByClassName('snake')
+    let fud = document.getElementsByClassName('food')
 
+    if (snk[0] === fud[0]) {
+        addScore();
+        //What else happens when snake = food?
+    }
+}
 
-
-    
-
-// function makeSnake () {
-//     for (let i = 0; i < snake.body.length; i++){
-//         let body = snake.body[i];
-//         console.log(body)
-//         let y = body[0];
-//         let x = body[1];
-//         let pos = y + '-' + x;
-        
-//         // document.getElementById(pos).classList.add('snake')
-//         document.getElementById(pos).classList.remove('snake');
-//         makeSnake();
-//         let newY = snake.nextDirection[1];
-//         let newX = snake.nextDirection[0];
-//         body[0] = body[0] + newY;
-//         body[1] = body[1] + newX;
-//     }
-// }
-    
-
-
-
-
-
-
-
-
+//Function changes score result and will increment based on food eaten.
+function addScore () {
+    score++
+    scoreResult.textContent = score;
+}
 
 
