@@ -8,6 +8,7 @@ let food = {
     eaten: false
 }
 let snake = [[9, 10]];
+
 let nextDirection = [0, 1];
 let gameState =  {
     playing: false,
@@ -94,20 +95,15 @@ function restart() {
     board.innerHTML = '';
     createBoard();
     genFood();
+    snake = [[9, 10]]
+    makeSnake();
     start.addEventListener('click', startGame);
-
-    document.addEventListener('keydown', function(ev){
-        ev.preventDefault();
-        if (ev.key === ' ') {
-        startGame();  
-        }
-    });
-    
 }
 
 //Tick
 setInterval(function () {
     if(gameState.playing) {
+        checkWalls();
         moveSnake();
         eatFood();
         return;
@@ -146,7 +142,6 @@ function moveSnake() {
     snake.push(nextHead);
     removeSnake(); //<--only remove snake if snake is not === to food??
     makeSnake();
-    console.log(head); 
 }
 
 //Check for Food, eat if available
@@ -158,8 +153,6 @@ function eatFood() {
         removeFood();
         genFood();
         //What else happens when snake = food?
-        //addBody();
-        
     }
 }
 
@@ -175,3 +168,12 @@ function removeFood() {
     let pos = currentFood[0];
     pos.classList.remove('food');
 }
+
+//Check for walls
+function checkWalls() {
+    let currentSnake = snake[snake.length - 1];
+    if(currentSnake[0] < 0 || currentSnake[0] > 19 || currentSnake[1] < 0 || currentSnake[1] > 19){
+        lostGame();
+    }
+}
+//Invoked at Tick Interval
