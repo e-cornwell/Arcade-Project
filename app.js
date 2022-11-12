@@ -5,7 +5,6 @@ const start = document.querySelector('#start');
 const scoreResult = document.querySelector('.scoreResult');
 let score = 0;
 let food = {
-    position: [], //<-- why can't I find position on the grid??
     eaten: false
 }
 let snake = [[9, 10]];
@@ -15,9 +14,9 @@ let gameState =  {
     gameLost: false
 }
 
-
 //Event listeners
 start.addEventListener('click', startGame);
+
 document.addEventListener('keydown', function(ev){
     ev.preventDefault();
     if (ev.key === ' ') {
@@ -45,7 +44,7 @@ window.addEventListener('keydown', function(ev) {
 })
 
 //Create board (called on line 3)
-function createBoard () {
+function createBoard() {
     for(let x = 0; x < 20; x++){
         let row = document.createElement('tr');
         board.appendChild(row);
@@ -59,25 +58,51 @@ function createBoard () {
 }
 
 //Generate Food
-function genFood (){
+function genFood(){
     let foodX = Math.floor(Math.random() * 20); 
     let foodY = Math.floor(Math.random() * 20);
     let row = board.children[foodX];
     let cell = row.children[foodY];
     cell.classList.add('food');
-    food.position = cell;
+    food.eaten = false; //Set food eaten to false when new food is generated.
 }
 genFood();
 
 //Start Game
-function startGame (){
+function startGame(){
     gameState.playing = !gameState.playing;
     if (gameState.playing){
-        start.innerText = 'Pause'
+        start.innerText = 'Pause';
     } else {
-        start.innerText = 'Resume'
+        start.innerText = 'Resume';
     }
-    console.log('game has started');
+}
+
+//Lose the game
+function lostGame () {
+    gameState.gameLost = true;
+    gameState.playing = false;
+    if (gameState.gameLost === true) {
+            start.innerText = 'Restart';
+            start.addEventListener('click', restart); //<-- call restart function 
+        }
+}
+//lostGame() <-- invoke when lose game condition = true. Works!
+
+//Restart function if the gameState.gameLost = true, resets the board/score.
+function restart() {
+    board.innerHTML = '';
+    createBoard();
+    genFood();
+    start.addEventListener('click', startGame);
+
+    document.addEventListener('keydown', function(ev){
+        ev.preventDefault();
+        if (ev.key === ' ') {
+        startGame();  
+        }
+    });
+    
 }
 
 //Tick
@@ -90,7 +115,7 @@ setInterval(function () {
 }, 250);
 
 //Make Snake
-function makeSnake () {
+function makeSnake() {
     for (let i = 0; i < snake.length; i++){
         let snakePos = snake[i];
         let x = snakePos[0];
@@ -102,7 +127,7 @@ function makeSnake () {
 makeSnake()
 
 //Remove Snake
-function removeSnake () {
+function removeSnake() {
     for (let i = 0; i < snake.length; i++){
         let snakePos = snake[i];
         let x = snakePos[0];
@@ -114,21 +139,14 @@ function removeSnake () {
     }
 }
 
-//Remove Food
-function removeFood() {
-    let currentFood = document.getElementsByClassName('food');
-    let pos = currentFood[0];
-    pos.classList.remove('food');
-}
-
-
 //Move Snake
 function moveSnake() {
     let head = snake[snake.length - 1];
     let nextHead = [head[0] + nextDirection[0], head[1] + nextDirection[1]];
     snake.push(nextHead);
-    removeSnake(); //<--only remove snake if snake is not === to food
+    removeSnake(); //<--only remove snake if snake is not === to food??
     makeSnake();
+    console.log(head); 
 }
 
 //Check for Food, eat if available
@@ -138,15 +156,22 @@ function eatFood() {
     if (snk[0] === fud[0]) {
         addScore();
         removeFood();
-        genFood(); 
+        genFood();
         //What else happens when snake = food?
+        //addBody();
+        
     }
 }
 
 //Function changes score result and will increment based on food eaten.
-function addScore () {
+function addScore() {
     score++
     scoreResult.textContent = score;
 }
 
-
+//Remove Food
+function removeFood() {
+    let currentFood = document.getElementsByClassName('food');
+    let pos = currentFood[0];
+    pos.classList.remove('food');
+}
