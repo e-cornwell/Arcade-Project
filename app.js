@@ -83,12 +83,11 @@ function startGame (){
 //Tick
 setInterval(function () {
     if(gameState.playing) {
-        console.log('tick');
         moveSnake();
         eatFood();
         return;
     } 
-}, 300);
+}, 250);
 
 //Make Snake
 function makeSnake () {
@@ -115,13 +114,20 @@ function removeSnake () {
     }
 }
 
+//Remove Food
+function removeFood() {
+    let currentFood = document.getElementsByClassName('food');
+    let pos = currentFood[0];
+    pos.classList.remove('food');
+}
+
 
 //Move Snake
 function moveSnake() {
     let head = snake[snake.length - 1];
     let nextHead = [head[0] + nextDirection[0], head[1] + nextDirection[1]];
     snake.push(nextHead);
-    removeSnake();
+    removeSnake(); //<--only remove snake if snake is not === to food
     makeSnake();
 }
 
@@ -129,9 +135,10 @@ function moveSnake() {
 function eatFood() {
     let snk = document.getElementsByClassName('snake')
     let fud = document.getElementsByClassName('food')
-
     if (snk[0] === fud[0]) {
         addScore();
+        removeFood();
+        genFood(); 
         //What else happens when snake = food?
     }
 }
