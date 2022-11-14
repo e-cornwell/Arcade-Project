@@ -65,7 +65,7 @@ function genFood(){
     let row = board.children[foodX];
     let cell = row.children[foodY];
     cell.classList.add('food');
-    food.eaten = false; //Set food eaten to false when new food is generated.
+    food.eaten = false; //<== Set food eaten to false when new food is generated.
 }
 genFood();
 
@@ -88,14 +88,14 @@ function lostGame () {
             start.addEventListener('click', restart); //<-- call restart function 
         }
 }
-//lostGame() <-- invoke when lose game condition = true. Works!
 
-//Restart function if the gameState.gameLost = true, resets the board/score.
+//Restart function if the gameState.gameLost = true, resets the board/score and immediatly starts the game.
 function restart() {
     board.innerHTML = '';
+    snake = [[9, 10]];
+    nextDirection = [0, 1];
     createBoard();
     genFood();
-    snake = [[9, 10]]
     makeSnake();
     start.addEventListener('click', startGame);
 }
@@ -107,8 +107,8 @@ setInterval(function () {
         moveSnake();
         eatFood();
         return;
-    } 
-}, 250);
+    }
+}, 175);
 
 //Make Snake
 function makeSnake() {
@@ -140,6 +140,9 @@ function moveSnake() {
     let head = snake[snake.length - 1];
     let nextHead = [head[0] + nextDirection[0], head[1] + nextDirection[1]];
     snake.push(nextHead);
+    if(food.eaten === true){
+        snake.push(head)
+    }
     removeSnake(); //<--only remove snake if snake is not === to food??
     makeSnake();
 }
@@ -166,10 +169,10 @@ function addScore() {
 function removeFood() {
     let currentFood = document.getElementsByClassName('food');
     let pos = currentFood[0];
-    pos.classList.remove('food');
+    pos.classList.remove('food'); 
 }
 
-//Check for walls
+//Check for walls (Invoked at Tick Interval)
 function checkWalls() {
     let currentSnake = snake[snake.length - 1];
     if(currentSnake[0] < 0 || currentSnake[0] > 19 || currentSnake[1] < 0 || currentSnake[1] > 19){
@@ -178,4 +181,3 @@ function checkWalls() {
         scoreResult.textContent = score;//<== Score reset if walls touched.
     }
 }
-//Invoked at Tick Interval

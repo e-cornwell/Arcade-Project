@@ -97,14 +97,11 @@ h2 {
 }
 
 .food {
-    background-color: rgba(223, 155, 21, 0.996);
+    background-color: rgba(232, 91, 91, 0.996);
     /* background-image: url(/images/ham.png); */
-    height: 18px;
-    width: 18px;
+    border-radius: 50%;
 }
 
 .snake {
     background-color: rgba(23, 178, 23, 0.798);
-    height: 18px;
-    width: 18px;
 }
