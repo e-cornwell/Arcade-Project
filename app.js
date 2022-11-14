@@ -174,6 +174,8 @@ function checkWalls() {
     let currentSnake = snake[snake.length - 1];
     if(currentSnake[0] < 0 || currentSnake[0] > 19 || currentSnake[1] < 0 || currentSnake[1] > 19){
         lostGame();
+        score = 0; 
+        scoreResult.textContent = score;//<== Score reset if walls touched.
     }
 }
 //Invoked at Tick Interval
